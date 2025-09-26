@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Agent Query</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      background: #4CAF50;
+      color: white;
+      padding: 20px;
+      margin: 0 0 30px 0;
+    }
+
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: auto;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    h2 {
+      margin-top: 30px;
+      color: #444;
+    }
+
+    #response {
+      background: #fff;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 400px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      text-align: left;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ask the Travel Agent</h1>
+  <form id="queryForm">
+    <label for="question">Your Question:</label>
+    <input type="text" id="question" name="question" placeholder="Type your travel question..." required>
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Response:</h2>
+  <div id="response"></div>
+
+  <script>
+    document.getElementById("queryForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const question = document.getElementById("question").value;
+
+      const response = await fetch("/query", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+      document.getElementById("response").innerText = data.answer || data.error;
+    });
+  </script>
+</body>
+</html>
